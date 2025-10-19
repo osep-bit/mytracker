@@ -195,37 +195,20 @@
         let sheetApiUrl = '';
         const CATEGORIES = ['Bills', 'Groceries', 'Dining Out', 'Shopping', 'Travel', 'Utilities', 'Salary', 'Rent', 'Investment', 'Transfer', 'Miscellaneous', 'Uncategorized'];
         const BANKS = ['Select Bank', 'Liv', 'Masreq', 'RAK', 'Emirates Islamic', 'ADCB'];
-        // SECURE: The password is now stored as a SHA-256 hash.
-        const CORRECT_PASSWORD_HASH = '2414114b73efe256e41e1762c2125296316275811d784102434a5c5553d71e21';
+        const APP_PASSWORD = '6112';
 
         // --- LOGIN LOGIC ---
 
         /**
-         * Hashes a string using the SHA-256 algorithm.
-         * @param {string} string The string to hash.
-         * @returns {Promise<string>} The hex-encoded hash string.
+         * Handles the login attempt by comparing the input to the stored password.
          */
-        async function sha256(string) {
-            const utf8 = new TextEncoder().encode(string);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray
-                .map((bytes) => bytes.toString(16).padStart(2, '0'))
-                .join('');
-            return hashHex;
-        }
-
-        /**
-         * Handles the login attempt by hashing the input and comparing it to the stored hash.
-         */
-        async function handleLogin() {
+        function handleLogin() {
             const passwordInput = document.getElementById('password-input');
             const loginError = document.getElementById('login-error');
             
             const enteredPassword = passwordInput.value;
-            const hashedInput = await sha256(enteredPassword);
 
-            if (hashedInput === CORRECT_PASSWORD_HASH) {
+            if (enteredPassword === APP_PASSWORD) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 // Initialize the app only after successful login
